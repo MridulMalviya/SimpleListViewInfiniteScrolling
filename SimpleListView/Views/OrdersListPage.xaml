@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage
+	xmlns="http://xamarin.com/schemas/2014/forms"
+	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+	x:Class="SimpleListView.Views.OrdersListPage"
+	xmlns:behavior="clr-namespace:SimpleListView.Behaviors;assembly=SimpleListView"
+	xmlns:converter="clr-namespace:SimpleListView.Converters;assembly=SimpleListView"
+	Title="{Binding Title}">
+	<ContentPage.Resources>
+		<ResourceDictionary>
+			<converter:ItemVisibilityEventArgstemConverter
+				x:Key="ItemVisibilityConverter" />
+		</ResourceDictionary>
+	</ContentPage.Resources>
+	<ContentPage.Content>
+		<ListView
+			ItemsSource="{Binding Orders}"
+			HasUnevenRows="true"
+			IsPullToRefreshEnabled="true"
+			RefreshCommand="{Binding RefreshCommand}"
+			IsRefreshing="{Binding IsBusy}">
+			<ListView.Behaviors>
+				<behavior:ListViewPagningBehavior
+					Command="{Binding LoadMoreCommand}"
+					Converter="{StaticResource ItemVisibilityConverter}">
+				</behavior:ListViewPagningBehavior>
+			</ListView.Behaviors>
+			<ListView.ItemTemplate>
+				<DataTemplate>
+					<TextCell
+						Text="{Binding ProductName}"
+						Detail="{Binding Created}">
+					</TextCell>
+				</DataTemplate>
+			</ListView.ItemTemplate>
+		</ListView>
+	</ContentPage.Content>
+</ContentPage>
